@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface DepartmentService {
 
-    void indexSalaryesForDepartment(int indexValue, int department);
+    void indexSalaryesForDepartment(String indexValue, String department);
 
     double sumSalaryInDept(String department);
 

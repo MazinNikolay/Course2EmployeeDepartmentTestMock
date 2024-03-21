@@ -1,10 +1,7 @@
 package pro.sky.Course2EmployeeDepartmentTestMock.service;
 
 import org.springframework.stereotype.Service;
-import pro.sky.Course2EmployeeDepartmentTestMock.exception.AddedEmloyeeInvalidDataException;
-import pro.sky.Course2EmployeeDepartmentTestMock.exception.EmployeeAlreadyAddedException;
-import pro.sky.Course2EmployeeDepartmentTestMock.exception.EmployeeNotFoundException;
-import pro.sky.Course2EmployeeDepartmentTestMock.exception.EmployeeStorageIsFullException;
+import pro.sky.Course2EmployeeDepartmentTestMock.exception.*;
 import pro.sky.Course2EmployeeDepartmentTestMock.model.Employee;
 import pro.sky.Course2EmployeeDepartmentTestMock.model.EmployeeBook;
 
@@ -25,8 +22,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee addEmployee(String firstName, String surName, String lastName, String department, String salary) {
+        isValidArgument(firstName, surName, lastName, department, salary);
         checkInputString(firstName, surName, lastName);
-
         String key = firstName.concat(surName).concat(lastName);
         if (employeeBook.getEmployeesMap().size() >= MAX_RANGE_EMPLOYEE) {
             throw new EmployeeStorageIsFullException();
@@ -40,6 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public String removeEmployee(String firstName, String surName, String lastName) {
+        isValidArgument(firstName, surName, lastName);
         checkInputString(firstName, surName, lastName);
         String key = firstName.concat(surName).concat(lastName);
         if (!employeeBook.getEmployeesMap().containsKey(key)) {
@@ -51,6 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findEmployee(String firstName, String surName, String lastName) {
+        isValidArgument(firstName, surName, lastName);
         checkInputString(firstName, surName, lastName);
         String key = firstName.concat(surName).concat(lastName);
         boolean employeeFound = employeeBook.getEmployeesMap().containsKey(key);
@@ -68,6 +67,28 @@ public class EmployeeServiceImpl implements EmployeeService {
     private void checkInputString(String firstName, String surName, String lastName) {
         if (!(isAlpha(firstName) && isAlpha(surName) && isAlpha(lastName))) {
             throw new AddedEmloyeeInvalidDataException();
+        }
+    }
+
+    private void isValidArgument(String arg1, String arg2, String arg3, String arg4, String arg5) {
+        boolean isNull = arg1 == null || arg2 == null || arg3 == null || arg4 == null || arg5 == null;
+        boolean isEmpty = false;
+        if (!isNull) {
+            isEmpty = arg1.isEmpty() || arg2.isEmpty() || arg3.isEmpty() || arg4.isEmpty() || arg5.isEmpty();
+        }
+        if (isNull || isEmpty || Integer.parseInt(arg4) < 1) {
+            throw new InvalidArgException();
+        }
+    }
+
+    private void isValidArgument(String arg1, String arg2, String arg3) {
+        boolean isNull = arg1 == null || arg2 == null || arg3 == null;
+        boolean isEmpty = false;
+        if (!isNull) {
+            isEmpty = arg1.isEmpty() || arg2.isEmpty() || arg3.isEmpty();
+        }
+        if (isNull || isEmpty) {
+            throw new InvalidArgException();
         }
     }
 }
