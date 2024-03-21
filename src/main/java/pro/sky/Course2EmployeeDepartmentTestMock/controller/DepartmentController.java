@@ -3,43 +3,50 @@ package pro.sky.Course2EmployeeDepartmentTestMock.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pro.sky.Course2EmployeeDepartmentTestMock.exception.EmployeeNotFoundException;
+import pro.sky.Course2EmployeeDepartmentTestMock.exception.EmployeeAlreadyAddedException;
 import pro.sky.Course2EmployeeDepartmentTestMock.model.Employee;
-import pro.sky.Course2EmployeeDepartmentTestMock.service.EmployeeService;
+import pro.sky.Course2EmployeeDepartmentTestMock.service.DepartmentService;
 
 import java.util.List;
+import java.util.Map;
 
+@RequestMapping(path = "/department")
 @RestController
-@RequestMapping(path = "/departments")
 public class DepartmentController {
-    private final EmployeeService employeeService;
+    private final DepartmentService departmentService;
 
-    public DepartmentController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
+    public DepartmentController(DepartmentService departmentService) {
+        this.departmentService = departmentService;
     }
 
-    @ExceptionHandler(EmployeeNotFoundException.class)
-    public ResponseEntity<String> handleNotFound() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Сотрудник не найден");
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<String> handleNumberFormat() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Неверно введены аргументы департамента. " +
+                "Повторите ввод департамента в формате int");
     }
 
-    @GetMapping(path = "/max-salary")
-    public Employee maxSalaryEmployeeInDept(@RequestParam("departmentId") int departmentId) {
-        return employeeService.maxSalaryEmployeeInDept(departmentId);
+    @GetMapping(path = "/{id}/employees")
+    public List<Employee> allEmployeesInDepartments(@PathVariable("id") String id) {
+        return departmentService.getEmployeesInDepartment(id);
     }
 
-    @GetMapping(path = "/min-salary")
-    public Employee minSalaryEmployeeInDept(@RequestParam("departmentId") int departmentId) {
-        return employeeService.minSalaryEmployeeInDept(departmentId);
+    @GetMapping(path = "/{id}/salary/sum")
+    public double sumSalaryInDept(@PathVariable("id") String id) {
+        return departmentService.sumSalaryInDept(id);
     }
 
-    @GetMapping(path = "/all")
-    public List<Employee> allEmployeesInDepartments(@RequestParam(value = "departmentId") int departmentId) {
-        return employeeService.employeesInDepartment(departmentId);
+    @GetMapping(path = "/{id}/salary/max")
+    public double maxSalaryEmployeeInDept(@PathVariable("id") String id) {
+        return departmentService.maxSalaryEmployeeInDept(id);
     }
 
-    @GetMapping
-    public List<Employee> allEmployeesInDepartments() {
-        return employeeService.allEmployeesInDepartments();
+    @GetMapping(path = "/{id}/salary/min")
+    public double minSalaryEmployeeInDept(@PathVariable("id") String id) {
+        return departmentService.minSalaryEmployeeInDept(id);
+    }
+
+    @GetMapping(path = "/employees")
+    public Map<Integer,List<Employee>> getAllEmployeesFromDepartmentsToMap() {
+        return departmentService.getAllEmployeesFromDepartmentsToMap();
     }
 }
