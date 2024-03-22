@@ -34,7 +34,7 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Сотрудник не найден");
     }
 
-    @ExceptionHandler(AddedEmloyeeInvalidDataException.class)
+    @ExceptionHandler(EmloyeeInvalidDataException.class)
     public ResponseEntity<String> handleAddedEmployeeData() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Некорректно введены данные сотрудника");
     }

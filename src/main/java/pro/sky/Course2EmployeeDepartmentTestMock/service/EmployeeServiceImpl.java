@@ -8,6 +8,7 @@ import pro.sky.Course2EmployeeDepartmentTestMock.model.EmployeeBook;
 import java.util.Collections;
 import java.util.Map;
 
+import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.isAlpha;
 
 @Service
@@ -16,15 +17,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeBook employeeBook;
 
-    public EmployeeServiceImpl() {
-        this.employeeBook = new EmployeeBook();
+    public EmployeeServiceImpl(EmployeeBook employeeBook) {
+        this.employeeBook = employeeBook;
     }
 
     @Override
     public Employee addEmployee(String firstName, String surName, String lastName, String department, String salary) {
         isValidArgument(firstName, surName, lastName, department, salary);
         checkInputString(firstName, surName, lastName);
-        String key = firstName.concat(surName).concat(lastName);
+        String key = capitalizeString(firstName).concat(capitalizeString(surName)).concat(capitalizeString(lastName));
         if (employeeBook.getEmployeesMap().size() >= MAX_RANGE_EMPLOYEE) {
             throw new EmployeeStorageIsFullException();
         } else if (employeeBook.getEmployeesMap().containsKey(key)) {
@@ -39,7 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public String removeEmployee(String firstName, String surName, String lastName) {
         isValidArgument(firstName, surName, lastName);
         checkInputString(firstName, surName, lastName);
-        String key = firstName.concat(surName).concat(lastName);
+        String key = capitalizeString(firstName).concat(capitalizeString(surName)).concat(capitalizeString(lastName));
         if (!employeeBook.getEmployeesMap().containsKey(key)) {
             throw new EmployeeNotFoundException();
         }
@@ -51,7 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee findEmployee(String firstName, String surName, String lastName) {
         isValidArgument(firstName, surName, lastName);
         checkInputString(firstName, surName, lastName);
-        String key = firstName.concat(surName).concat(lastName);
+        String key = capitalizeString(firstName).concat(capitalizeString(surName)).concat(capitalizeString(lastName));
         boolean employeeFound = employeeBook.getEmployeesMap().containsKey(key);
         if (!employeeFound) {
             throw new EmployeeNotFoundException();
@@ -66,7 +67,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private void checkInputString(String firstName, String surName, String lastName) {
         if (!(isAlpha(firstName) && isAlpha(surName) && isAlpha(lastName))) {
-            throw new AddedEmloyeeInvalidDataException();
+            throw new EmloyeeInvalidDataException();
         }
     }
 
@@ -90,5 +91,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (isNull || isEmpty) {
             throw new InvalidArgException();
         }
+    }
+
+    private String capitalizeString(String arg) {
+        return capitalize(arg.toLowerCase());
     }
 }
