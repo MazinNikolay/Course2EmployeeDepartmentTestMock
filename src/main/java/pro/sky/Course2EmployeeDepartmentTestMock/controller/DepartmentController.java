@@ -3,6 +3,7 @@ package pro.sky.Course2EmployeeDepartmentTestMock.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pro.sky.Course2EmployeeDepartmentTestMock.exception.EmployeeNotFoundException;
 import pro.sky.Course2EmployeeDepartmentTestMock.exception.InvalidArgException;
 import pro.sky.Course2EmployeeDepartmentTestMock.model.Employee;
 import pro.sky.Course2EmployeeDepartmentTestMock.service.DepartmentService;
@@ -29,6 +30,11 @@ public class DepartmentController {
     public ResponseEntity<String> handleNumberFormat() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Неверно введен номер департамента. " +
                 "Повторите ввод номера департамента в формате d");
+    }
+
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    public ResponseEntity<String> handleNotFound() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Сотрудники не найдены");
     }
 
     @GetMapping(path = "/{id}/employees")

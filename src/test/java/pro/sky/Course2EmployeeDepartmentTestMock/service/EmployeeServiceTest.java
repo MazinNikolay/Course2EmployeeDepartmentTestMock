@@ -16,8 +16,16 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class EmployeeServiceTest {
-
     private EmployeeService out;
+
+    @Mock
+    private EmployeeBook employeeBookMock;
+
+    @BeforeEach
+    public void initVariable() {
+        out = new EmployeeServiceImpl(employeeBookMock);
+    }
+
     private Map<String, Employee> employeeMapEmpty = new HashMap<>();
     private Map<String, Employee> employeeMap = new HashMap<>(Map.of(
             "IvanovIvanIvanovich", new Employee("Ivanov", "Ivan", "Ivanovich",
@@ -44,14 +52,6 @@ class EmployeeServiceTest {
     private final List<String> CORRECT_EMPLOYEE = Arrays.asList("ivanov", "ivan", "Ivanovich", "1", "10000");
     private final Employee CORRECT_EMPLOYEE_CLASS = new Employee("ivanov", "ivan", "Ivanovich",
             1, 10_000);
-
-    @Mock
-    private EmployeeBook employeeBookMock;
-
-    @BeforeEach
-    public void initVariables() {
-        out = new EmployeeServiceImpl(employeeBookMock);
-    }
 
     @Test
     void addedEmployeeCorrect() {
