@@ -23,6 +23,7 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не введены данные, " +
                 "либо номер департамента меньше 1");
     }
+
     @ExceptionHandler(NumberFormatException.class)
     public ResponseEntity<String> handleNumberFormat() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Неверно введены аргументы департамента или зарплаты. " +
