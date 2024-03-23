@@ -37,6 +37,16 @@ public class DepartmentController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Сотрудники не найдены");
     }
 
+    @GetMapping(path = "/{id}/{indexValue}/salary/index")
+    public void indexSalaryesForDepartment(@PathVariable("indexValue") String indexValue, @PathVariable("id") String id) {
+        departmentService.indexSalaryesForDepartment(indexValue, id);
+    }
+
+    @GetMapping(path = "/{id}/salary/avg")
+    public double avgSalaryForDepartment(@PathVariable("id") String id) {
+        return departmentService.avgSalaryForDepartment(id);
+    }
+
     @GetMapping(path = "/{id}/employees")
     public List<Employee> allEmployeesInDepartments(@PathVariable("id") String id) {
         return departmentService.getEmployeesInDepartment(id);

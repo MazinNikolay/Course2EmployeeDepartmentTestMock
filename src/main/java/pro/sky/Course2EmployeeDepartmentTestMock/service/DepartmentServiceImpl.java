@@ -21,7 +21,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         isValidArgument(indexValue, dept);
         int intDept = Integer.parseInt(dept);
         int intIndexValue = Integer.parseInt(indexValue);
-        checkNull(employeeService.printAllEmployees().values());
         employeeService.printAllEmployees().values().stream()
                 .filter(e -> e.getDepartment() == intDept)
                 .forEach(e -> e.setSalary(Math.round(e.getSalary() + e.getSalary() * intIndexValue / 1000)));
@@ -110,12 +109,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         if (isNull || isEmpty || Integer.parseInt(arg2) < 1) {
             throw new InvalidArgException();
-        }
-    }
-
-    private void checkNull(Collection<Employee> values) {
-        if (values == null) {
-            throw new EmployeeNotFoundException();
         }
     }
 }
