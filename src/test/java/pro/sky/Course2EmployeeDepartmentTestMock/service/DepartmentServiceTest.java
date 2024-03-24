@@ -26,7 +26,6 @@ class DepartmentServiceTest {
         out = new DepartmentServiceImpl(employeeServiceMock);
     }
 
-    private Map<String, Employee> employeeMapEmpty = new HashMap<>();
     private Map<String, Employee> employeeMap = new HashMap<>(Map.of(
             "IvanovIvanIvanovich", new Employee("Ivanov", "Ivan", "Ivanovich",
                     1, 20_000),
@@ -84,7 +83,7 @@ class DepartmentServiceTest {
 
     @Test
     void avgSalaryEmptyMap() {
-        when(employeeServiceMock.printAllEmployees()).thenReturn(employeeMapEmpty);
+        when(employeeServiceMock.printAllEmployees()).thenReturn(Collections.emptyMap());
         double actualSalary = out.avgSalaryForDepartment("1");
         assertEquals(0.0, actualSalary);
     }
@@ -109,7 +108,7 @@ class DepartmentServiceTest {
 
     @Test
     void sumSalaryEmptyMap() {
-        when(employeeServiceMock.printAllEmployees()).thenReturn(employeeMapEmpty);
+        when(employeeServiceMock.printAllEmployees()).thenReturn(Collections.emptyMap());
         double actualSalary = out.sumSalaryInDept("1");
         assertEquals(0.0, actualSalary);
     }
@@ -134,7 +133,7 @@ class DepartmentServiceTest {
 
     @Test
     void maxSalaryEmptyMap() {
-        when(employeeServiceMock.printAllEmployees()).thenReturn(employeeMapEmpty);
+        when(employeeServiceMock.printAllEmployees()).thenReturn(Collections.emptyMap());
         assertThrows(EmployeeNotFoundException.class, () -> out.maxSalaryEmployeeInDept("1"));
     }
 
@@ -158,7 +157,7 @@ class DepartmentServiceTest {
 
     @Test
     void minSalaryEmptyMap() {
-        when(employeeServiceMock.printAllEmployees()).thenReturn(employeeMapEmpty);
+        when(employeeServiceMock.printAllEmployees()).thenReturn(Collections.emptyMap());
         assertThrows(EmployeeNotFoundException.class, () -> out.minSalaryEmployeeInDept("1"));
     }
 
@@ -184,7 +183,7 @@ class DepartmentServiceTest {
 
     @Test
     void getEmployeesInDepartmentEmptyMap() {
-        when(employeeServiceMock.printAllEmployees()).thenReturn(employeeMapEmpty);
+        when(employeeServiceMock.printAllEmployees()).thenReturn(Collections.emptyMap());
         List<Employee> expectedList = new ArrayList<>();
         List<Employee> actualList = out.getEmployeesInDepartment("1");
         assertEquals(expectedList, actualList);
@@ -211,7 +210,7 @@ class DepartmentServiceTest {
 
     @Test
     void getAllEmployeesFromDepartmentsToMapEmptyMap() {
-        when(employeeServiceMock.printAllEmployees()).thenReturn(employeeMapEmpty);
+        when(employeeServiceMock.printAllEmployees()).thenReturn(Collections.emptyMap());
         Map<Integer, List<Employee>> expectedMap = new HashMap<>();
         Map<Integer, List<Employee>> actualMap = out.getAllEmployeesFromDepartmentsToMap();
         assertEquals(expectedMap, actualMap);
@@ -229,7 +228,7 @@ class DepartmentServiceTest {
 
     @Test
     void getAllEmployeesEmptyMap() {
-        when(employeeServiceMock.printAllEmployees()).thenReturn(employeeMapEmpty);
+        when(employeeServiceMock.printAllEmployees()).thenReturn(Collections.emptyMap());
         List<Employee> expectedList = new ArrayList<>();
         List<Employee> actualList = out.getAllEmployees();
         assertEquals(expectedList, actualList);
